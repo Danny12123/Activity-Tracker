@@ -53,6 +53,7 @@ export function ActivityManagement() {
   const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false)
   const [isUpdateDialogOpen, setIsUpdateDialogOpen] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
+  const [isCreateActivity, setIsCreateActivity] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null)
 
   // Form states
@@ -110,6 +111,7 @@ export function ActivityManagement() {
 
   const createActivity = async () => {
     try {
+      setIsCreateActivity(true);
       const {
         data: { user },
       } = await supabase.auth.getUser()
@@ -130,7 +132,9 @@ export function ActivityManagement() {
       setNewActivity({ title: "", description: "", category: "General" })
       setIsCreateDialogOpen(false)
       fetchActivities()
+       setIsCreateActivity(false);
     } catch (error) {
+      setIsCreateActivity(false);
       console.error("Error creating activity:", error)
       setError("Failed to create activity")
     }
@@ -199,9 +203,9 @@ export function ActivityManagement() {
   const getStatusBadge = (status: string) => {
     switch (status) {
       case "done":
-        return <Badge className="bg-green-100 text-green-800 hover:bg-green-100">Done</Badge>
+        return <Badge className="bg-green-100 capitalize text-green-800 hover:bg-green-100">Done</Badge>
       case "pending":
-        return <Badge className="bg-yellow-100 text-yellow-800 hover:bg-yellow-100">Pending</Badge>
+        return <Badge className="bg-yellow-100 capitalize text-yellow-800 hover:bg-yellow-100">Pending</Badge>
       default:
         return <Badge variant="secondary">Unknown</Badge>
     }
@@ -255,12 +259,31 @@ export function ActivityManagement() {
                   onChange={(e) => setNewActivity({ ...newActivity, description: e.target.value })}
                 />
               </div>
+              <div>
+                <Label htmlFor="category">Category</Label>
+                <Select
+                  value={newActivity.category}
+                  onValueChange={(value) => setNewActivity((prev) => ({ ...prev, category: value }))}
+                >
+                  <SelectTrigger className="w-full">
+                    <SelectValue placeholder="Select category" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="General">General</SelectItem>
+                    <SelectItem value="Monitoring">Monitoring</SelectItem>
+                    <SelectItem value="Maintenance">Maintenance</SelectItem>
+                    <SelectItem value="Security">Security</SelectItem>
+                    <SelectItem value="Performance">Performance</SelectItem>
+                    <SelectItem value="Troubleshooting">Troubleshooting</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
               <div className="flex justify-end space-x-2">
                 <Button variant="outline" onClick={() => setIsCreateDialogOpen(false)}>
                   Cancel
                 </Button>
                 <Button onClick={createActivity} disabled={!newActivity.title.trim()}>
-                  Create Activity
+                  {isCreateActivity ? 'Loading...' : 'Create Activity'}
                 </Button>
               </div>
             </div>

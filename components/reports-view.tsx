@@ -9,6 +9,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { BarChart3, Download, Filter, CheckCircle, Clock } from "lucide-react"
 import { format, startOfDay, endOfDay } from "date-fns"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 
 interface ReportData {
   activity: {
@@ -103,7 +104,7 @@ export function ReportsView() {
       setLoading(false)
     }
   }
-
+// Export report as CSV
   const exportReport = () => {
     const csvContent = generateCSV()
     const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" })
@@ -144,7 +145,7 @@ export function ReportsView() {
 
   const getCompletedActivities = () => {
     return reportData.filter((item) => {
-      const latestUpdate = item.updates[0] // Already sorted by updated_at desc
+      const latestUpdate = item.updates[0] 
       return latestUpdate?.status === "done"
     }).length
   }
@@ -178,33 +179,42 @@ export function ReportsView() {
             </div>
             <div>
               <Label htmlFor="category">Category</Label>
-              <select
-                id="category"
-                className="w-full p-2 border border-gray-300 rounded-md"
-                value={selectedCategory}
-                onChange={(e) => setSelectedCategory(e.target.value)}
-              >
-                <option value="all">All Categories</option>
-                <option value="General">General</option>
-                <option value="Monitoring">Monitoring</option>
-                <option value="Maintenance">Maintenance</option>
-                <option value="Security">Security</option>
-                <option value="Performance">Performance</option>
-                <option value="Troubleshooting">Troubleshooting</option>
-              </select>
+              <Select
+                  value={selectedCategory}
+                onValueChange={(value) => setSelectedCategory(value)}
+                defaultValue="General"
+                >
+                  <SelectTrigger className="w-full">
+                    <SelectValue placeholder="Select category" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">All Categories</SelectItem>
+                    <SelectItem value="General">General</SelectItem>
+                    <SelectItem value="Monitoring">Monitoring</SelectItem>
+                    <SelectItem value="Maintenance">Maintenance</SelectItem>
+                    <SelectItem value="Security">Security</SelectItem>
+                    <SelectItem value="Performance">Performance</SelectItem>
+                    <SelectItem value="Troubleshooting">Troubleshooting</SelectItem>
+                  </SelectContent>
+                </Select>
             </div>
             <div>
               <Label htmlFor="status">Status</Label>
-              <select
-                id="status"
-                className="w-full p-2 border border-gray-300 rounded-md"
-                value={selectedStatus}
-                onChange={(e) => setSelectedStatus(e.target.value)}
-              >
-                <option value="all">All Statuses</option>
-                <option value="pending">Pending</option>
-                <option value="done">Done</option>
-              </select>
+              
+              <Select
+                  value={selectedStatus}
+                onValueChange={(value) => setSelectedStatus(value)}
+                defaultValue="all"
+                >
+                  <SelectTrigger className="w-full">
+                    <SelectValue placeholder="Select status" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">All status</SelectItem>
+                    <SelectItem value="pending">Pending</SelectItem>
+                    <SelectItem value="done">Done</SelectItem>
+                  </SelectContent>
+                </Select>
             </div>
           </div>
 
