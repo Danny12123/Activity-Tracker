@@ -1,4 +1,4 @@
--- Insert sample activities for demonstration
+-- Insert sample activities for demonstration of how the system works
 INSERT INTO public.activities (title, description, category) VALUES
 ('Daily SMS count in comparison to SMS count from logs', 'Compare SMS counts between system reports and actual logs to identify discrepancies', 'Monitoring'),
 ('Database backup verification', 'Verify that all scheduled database backups completed successfully', 'Maintenance'),
