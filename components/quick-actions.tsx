@@ -6,8 +6,7 @@ import { BarChart3, Calendar, FileText, Users } from "lucide-react"
 import Link from "next/link"
 
 export function QuickActions() {
-  return (
-    <Card>
+  return <Card>
       <CardHeader>
         <CardTitle className="text-lg font-semibold">Quick Actions</CardTitle>
       </CardHeader>
@@ -32,14 +31,6 @@ export function QuickActions() {
             Daily Activity View
           </Button>
         </Link>
-
-        <Link href="/team" className="block">
-          <Button variant="outline" className="w-full justify-start bg-transparent">
-            <Users className="w-4 h-4 mr-2" />
-            Team Management
-          </Button>
-        </Link>
       </CardContent>
-    </Card>
-  )
+    </Card>;
 }
